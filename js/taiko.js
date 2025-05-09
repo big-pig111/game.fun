@@ -2,28 +2,28 @@
  * Created by yuanyaoqi on 16/7/27.
  */
 var username;
-var taikoList=[];//鼓点数组
-//1.红鼓点小 2.蓝鼓点小 3.红鼓点大 4.蓝鼓点大
+var taikoList=[]; //Drum note array
+//1.Small red drum 2.Small blue drum 3.Big red drum 4.Big blue drum
 var taikoValueList=[
-    1,0,0,0,2,0,0,0,1,0,0,0,2,0,0,0,//前奏
-    1,1,0,0,1,2,0,0,1,1,0,0,1,2,0,0,//主歌
+    1,0,0,0,2,0,0,0,1,0,0,0,2,0,0,0,//Prelude
+    1,1,0,0,1,2,0,0,1,1,0,0,1,2,0,0,//Verse
     1,1,0,0,1,2,0,0,1,1,0,0,1,2,0,0,
-    1,0,2,0,1,0,1,0,1,0,2,0,1,0,1,0,//过渡
+    1,0,2,0,1,0,1,0,1,0,2,0,1,0,1,0,//Transition
     2,0,2,0,1,0,2,0,2,0,2,0,1,0,2,0,1,0,1,0,2,0,2,0,
-    3,0,3,0,1,0,2,0,1,2,1,0,1,2,1,0,//副歌
+    3,0,3,0,1,0,2,0,1,2,1,0,1,2,1,0,//Chorus
     4,0,4,0,1,0,2,0,2,1,2,0,2,1,2,0,
     3,0,3,0,1,0,2,0,1,2,1,0,1,2,1,0,
     4,0,4,0,1,0,2,0,2,1,2,0,2,1,2,0,
-    1,0,0,0,2,0,0,0,1,0,0,0,2,0,0,0,//间奏
+    1,0,0,0,2,0,0,0,1,0,0,0,2,0,0,0,//Interlude
     1,0,0,0,2,0,0,0,1,0,0,0,2,0,0,0,
-    1,0,2,0,1,0,1,0,1,0,2,0,1,0,1,0,//过渡
+    1,0,2,0,1,0,1,0,1,0,2,0,1,0,1,0,//Transition
     2,0,2,0,1,0,2,0,2,0,2,0,1,0,2,0,1,0,1,0,2,0,2,0,
-    3,0,3,0,1,0,2,0,1,2,1,0,1,2,1,0,//副歌
+    3,0,3,0,1,0,2,0,1,2,1,0,1,2,1,0,//Chorus
     4,0,4,0,1,0,2,0,2,1,2,0,2,1,2,0,
     3,0,3,0,1,0,2,0,1,2,1,0,1,2,1,0,
     4,0,4,0,1,0,2,0,2,1,2,0,2,1,2,0];
-var taikoValueOrder=0;//鼓点次序
-var scoreNumber=0;//分数
+var taikoValueOrder=0; //Drum note order
+var scoreNumber=0; //Score
 var taikoCreat;
 var taikoMove;
 var dancerMove;
@@ -37,7 +37,7 @@ window.onload=function () {
 function gameStart() {
     username=document.getElementById("username").value;
     if(username==""){
-        document.getElementById("startBox").getElementsByTagName("h4")[0].innerHTML="请输入用户名";
+        document.getElementById("startBox").getElementsByTagName("h4")[0].innerHTML="Please enter your username";
     }
     else if(username!==""){
         document.getElementById("startBox").style.display="none";
@@ -49,7 +49,7 @@ function gamePlay() {
     document.getElementById("startBox").style.display="none";
     document.getElementById("endBox").style.display="none";
     document.getElementById("taikoBox").style.display="block";
-    //清除
+    //Clear
     taikoList=[];
     dancerList=[];
     taikoValueOrder=0;
@@ -59,7 +59,7 @@ function gamePlay() {
     scoreNumber=0;
     document.getElementById("scoreBoard").innerHTML=scoreNumber;
     document.getElementById("pauseChoice").style.display="none";
-    //背景音乐
+    //Background music
     document.getElementById("bgmusic").pause();
     document.getElementById("endmusic").pause();
     document.getElementById("gamestart").play();
@@ -67,7 +67,7 @@ function gamePlay() {
         document.getElementById("bg_travel").currentTime=0;
         document.getElementById("bg_travel").play();
     },2000);
-    //太鼓鼓点
+    //Taiko drum notes
     var roadCtx=document.getElementById("roadCtx").getContext("2d");
     var taikoComb=document.getElementById("taikoComb");
     setTimeout(function () {
@@ -76,7 +76,7 @@ function gamePlay() {
         },60000/138);
         taikoMove=setInterval(function () {taikoListMove(roadCtx);},1);
     },770);
-    //舞蹈小人
+    //Dancing characters
     var dancerCtx=document.getElementById("dancerCtx").getContext("2d");
     var dancerTaikopng=document.getElementById("dancerTaiko");
     var dancer_1=document.getElementById("dancer_1");
@@ -101,7 +101,7 @@ function gamePlay() {
             dancerList[i].draw();
         }
     },120000/138/9);
-    //音乐播放完毕后执行结束函数
+    //Execute end function when music finishes
     setTimeout(function () {
         gameEnd();
         saveScore();
@@ -133,9 +133,9 @@ function gameContinue() {
     document.getElementById("bg_travel").play();
 }
 
-//键盘敲下,触发鼓点音效及鼓面效果,检测是否击中鼓点
+//Keyboard press, trigger drum sound and drum surface effect, check if the drum note is hit
 window.onkeydown=function () {
-    //获取鼓点图片及鼓点音效
+    //Get drum images and drum sounds
     var taikored=document.getElementsByClassName("taikoRed");
     var taikoblue=document.getElementsByClassName("taikoBlue");
     var dong=document.getElementById("dongmusic");
@@ -146,7 +146,7 @@ window.onkeydown=function () {
         imgDisplay(taikoblue[0]);
         ka.currentTime=0;
         ka.play();
-        //检测蓝鼓点
+        //Check blue drum note
         taikoCheck("Blue");
     }
     //V
@@ -154,7 +154,7 @@ window.onkeydown=function () {
         imgDisplay(taikored[0]);
         dong.currentTime=0;
         dong.play();
-        //检测红鼓点
+        //Check red drum note
         taikoCheck("Red");
     }
     //B
@@ -162,7 +162,7 @@ window.onkeydown=function () {
         imgDisplay(taikored[1]);
         dong.currentTime=0;
         dong.play();
-        //检测红鼓点
+        //Check red drum note
         taikoCheck("Red");
     }
     //N
@@ -170,7 +170,7 @@ window.onkeydown=function () {
         imgDisplay(taikoblue[1]);
         ka.currentTime=0;
         ka.play();
-        //检测蓝鼓点
+        //Check blue drum note
         taikoCheck("Blue");
     }
 }
@@ -198,21 +198,21 @@ function creatTaiko(ctx,imgnode) {
         return;
     }
     if(taikoValueList[taikoValueOrder]==1){
-        newTaiko=new taikoPrototype(ctx,imgnode,1,18,"咚~~");
+        newTaiko=new taikoPrototype(ctx,imgnode,1,18,"DON~~");
     }
     if(taikoValueList[taikoValueOrder]==2){
-        newTaiko=new taikoPrototype(ctx,imgnode,2,18,"咔~~");
+        newTaiko=new taikoPrototype(ctx,imgnode,2,18,"KA~~");
     }
     if(taikoValueList[taikoValueOrder]==3){
-        newTaiko=new taikoPrototype(ctx,imgnode,3,8,"咚(大)~");
+        newTaiko=new taikoPrototype(ctx,imgnode,3,8,"DON(Loud)~");
     }
     if(taikoValueList[taikoValueOrder]==4){
-        newTaiko=new taikoPrototype(ctx,imgnode,4,8,"咔(大)~");
+        newTaiko=new taikoPrototype(ctx,imgnode,4,8,"KA(Loud)~");
     }
     taikoList.push(newTaiko);
     taikoValueOrder++;
 }
-//太鼓鼓点对象
+//Taiko drum note object
 function taikoPrototype(ctx,imgnode,value,drawY,text) {
     switch (value){
         case 1: this.color="Red";
@@ -245,14 +245,14 @@ function taikoPrototype(ctx,imgnode,value,drawY,text) {
         this.ctx.drawImage(this.imgNode,this.cutX,this.cutY,this.cutW,this.cutW,this.drawX,this.drawY,this.drawW,this.drawW);
         this.ctx.stroke();
         this.ctx.fillStyle="black";
-        this.ctx.font="16px 微软雅黑";
+        this.ctx.font="16px Microsoft YaHei";
         this.ctx.fillText(text,this.drawX+this.drawW/2-18,113);
     }
     this.move=function () {
         this.drawX-=this.speed;
     }
 }
-//鼓点移动
+//Drum note movement
 function taikoListMove(ctx) {
     ctx.clearRect(0,0,645,120);
     for(var i=0;i<taikoList.length;i++){
@@ -265,36 +265,36 @@ function taikoListMove(ctx) {
         }
     }
 }
-//判定鼓点
+//Judge drum note
 function taikoCheck(taikovalue){
-    var taikocheckvalue=false; //默认击中状态为false
+    var taikocheckvalue=false; //Default hit state is false
     var scoreBoard=document.getElementById("scoreBoard");
     var taikosmile=document.getElementById("taikoSmile");
     var taikoCheckDistance;
     for(var i=0;i<taikoList.length;i++){
         if(taikoList[i].size=="Small"){
-            taikoCheckDistance=22; //小鼓点的判断中心
+            taikoCheckDistance=22; //Judgment center for small drum notes
         }
-        else{taikoCheckDistance=12;} //大鼓点的判断中心
-        //判定是否为可
+        else{taikoCheckDistance=12;} //Judgment center for big drum notes
+        //Judge if it's "OK"
         if(taikoList[i].drawX>taikoCheckDistance-50&&taikoList[i].drawX<taikoCheckDistance+50&&taikoList[i].color==taikovalue){
-            taikocheckvalue=true; //1.击中状态改变
-            //2.短暂消显示太鼓笑脸
+            taikocheckvalue=true; //1.Change hit state
+            //2.Temporarily display taiko smiley face
             taikosmile.style.display="block";
             setTimeout(function () {
                 taikosmile.style.display="none";
             },100);
-            //3.进阶判定是否为良
+            //3.Further judge if it's "Great"
             if(taikoList[i].drawX>taikoCheckDistance-30&&taikoList[i].drawX<taikoCheckDistance+30){
-                judgement(0);//4.显示judgement图案及文字
+                judgement(0); //4.Display judgment pattern and text
                 scoreNumber+=100;
             }
             else{
                 judgement(1);
                 scoreNumber+=50;
             }
-            taikoList.splice(i,1);//5.清除该鼓点
-            scoreBoard.innerHTML=scoreNumber; //6.更改分数
+            taikoList.splice(i,1); //5.Clear the drum note
+            scoreBoard.innerHTML=scoreNumber; //6.Update score
         }
     }
     if(taikocheckvalue==false){
@@ -306,12 +306,12 @@ function taikoCheck(taikovalue){
         setTimeout(function () {
             judgementCtx.clearRect(0,0,650,250);
         },200);
-    } //未击中时 短暂显示"不可"
+    } //When missed, temporarily display "Miss"
 }
-//显示judgement图案及文字
+//Display judgment pattern and text
 function judgement(a) {
-    //a=0时,显示"良"及黄色光环,a=1时,显示"可"及白色光环
-    var i=0; //起始帧数为0
+    //When a=0, display "Great" and yellow halo; when a=1, display "OK" and white halo
+    var i=0; //Starting frame number is 0
     var judgementCtx=document.getElementById("judgementCtx").getContext("2d");
     var judgementText=document.getElementById("judgementText");
     var judgementHalo=document.getElementById("judgementHalo");
@@ -326,14 +326,14 @@ function judgement(a) {
         judgementCtx.stroke();
         i++;
         if(i<4){
-            setTimeout(judgementDraw,100); //帧数小于4时,继续调用函数
+            setTimeout(judgementDraw,100); //When frame number is less than 4, continue calling the function
         }
         if(i==4){
-            judgementCtx.clearRect(0,0,650,250); //帧数等于4时,动画结束,清除画布
+            judgementCtx.clearRect(0,0,650,250); //When frame number equals 4, animation ends, clear the canvas
         }
     }
 }
-//舞蹈人物
+//Dancing character
 function dancerPrototype(ctx,imgnode,drawX,time) {
     this.ctx=ctx;
     this.imgNode=imgnode;
@@ -343,9 +343,9 @@ function dancerPrototype(ctx,imgnode,drawX,time) {
         this.ctx.beginPath();
         this.ctx.drawImage(this.imgNode,this.cutX,0,120,170,this.drawX,10,120,170);
         this.ctx.stroke();
-        //改变切割图片位置,为下一次draw做准备
+        //Change the image cutting position for the next draw
         this.cutX+=120;
-        if(this.cutX==120*time){  //time为舞蹈人物的动作数,循环完一次后重新开始
+        if(this.cutX==120*time){  //Time is the number of dance moves of the character, restart after one cycle
             this.cutX=0;
         }
     }
@@ -359,7 +359,7 @@ function dancerGirltype(ctx,imgnode) {
         this.ctx.beginPath();
         this.ctx.drawImage(this.imgNode,0,this.cutY,900,190,0,68,900,190);
         this.ctx.stroke();
-        //time为舞蹈人物的动作数,每四拍改变一次动作
+        //Time is the number of dance moves of the character, change move every four beats
         this.time++;
         if(this.time==4){  
             this.cutY=193;
@@ -370,15 +370,15 @@ function dancerGirltype(ctx,imgnode) {
         }
     }
 }
-//显示图片
+//Display image
 function imgDisplay(img) {
     img.style.display="block";
 }
-//隐藏图片
+//Hide image
 function imgDisAppear(img) {
     img.style.display="none";
 }
-//游戏结束
+//Game over
 function gameEnd() {
     clearInterval(taikoCreat);
     clearInterval(taikoMove);
@@ -389,7 +389,7 @@ function gameEnd() {
     document.getElementById("endmusic").play();
     queryScore();
 }
-//保存用户分数
+//Save user score
 function saveScore(){
     var db = openDatabase("demo100","","",1024*1024*10);
     db.transaction(function(tx){
@@ -406,7 +406,7 @@ function saveScore(){
         console.log(success);
     });
 }
-//获取排行榜
+//Get leaderboard
 function queryScore(){
     var db = openDatabase("demo100","","",1024*1024*10);
     db.transaction(function(tx){
@@ -416,15 +416,15 @@ function queryScore(){
             else if(rs.rows.length==1){
                 document.getElementById("scoreRank").innerHTML='<tr><td><div id="firstIcon"></div></td><td>'+
                     rs.rows[0].username+'</td><td>'+rs.rows[0].score+'</td></tr>'+
-                    '<tr><td><div id="secondIcon"></div></td><td>暂无</td><td>暂无</td></tr>'+
-                    '<tr><td><div id="thirdIcon"></div></td><td>暂无</td><td>暂无</td></tr>';
+                    '<tr><td><div id="secondIcon"></div></td><td>No data</td><td>No data</td></tr>'+
+                    '<tr><td><div id="thirdIcon"></div></td><td>No data</td><td>No data</td></tr>';
             }
             else if(rs.rows.length==2){
                 document.getElementById("scoreRank").innerHTML='<tr><td><div id="firstIcon"></div></td><td>'+
                     rs.rows[0].username+'</td><td>'+rs.rows[0].score+'</td></tr>'+
                     '<tr><td><div id="secondIcon"></div></td><td>'+
                     rs.rows[1].username+'</td><td>'+rs.rows[1].score+'</td></tr>'+
-                    '<tr><td><div id="thirdIcon"></div></td><td>暂无</td><td>暂无</td></tr>';
+                    '<tr><td><div id="thirdIcon"></div></td><td>No data</td><td>No data</td></tr>';
             }
             else if(rs.rows.length>2) {
                 document.getElementById("scoreRank").innerHTML = '<tr><td><div id="firstIcon"></div></td><td>' +
